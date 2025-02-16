@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,17 +22,18 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            
+
             // Foto Profil
             const CircleAvatar(
               radius: 50,
-              backgroundImage: AssetImage('assets/ava1.png'), // Ganti dengan path gambar profil
+              backgroundImage: AssetImage(
+                  'assets/ava1.png'), // Ganti dengan path gambar profil
             ),
             const SizedBox(height: 10),
 
             // Nama & Email
             const Text(
-              "John Doe",
+              "Hibatul Wafi P",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 22,
@@ -40,7 +41,7 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const Text(
-              "johndoe@example.com",
+              "hiwapiputra@gmail.com",
               style: TextStyle(
                 color: Colors.white70,
                 fontSize: 16,
@@ -52,6 +53,11 @@ class ProfileScreen extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
+                  ProfileMenuItem(
+                    icon: Icons.content_cut,
+                    title: "Haircut History",
+                    onTap: () {},
+                  ),
                   ProfileMenuItem(
                     icon: Icons.person,
                     title: "Edit Profile",
@@ -83,11 +89,12 @@ class ProfileScreen extends StatelessWidget {
 
             // Tombol Logout
             Padding(
-              padding: const EdgeInsets.only(bottom: 20),
+              padding: const EdgeInsets.only(bottom: 10, top: 10),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                  backgroundColor: Colors.orange,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -133,9 +140,11 @@ class ProfileMenuItem extends StatelessWidget {
         leading: Icon(icon, color: Colors.white),
         title: Text(
           title,
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style:
+              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        trailing: const Icon(Icons.arrow_forward_ios, color: Colors.white70, size: 16),
+        trailing: const Icon(Icons.arrow_forward_ios,
+            color: Colors.white70, size: 16),
         onTap: onTap,
       ),
     );

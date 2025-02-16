@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+class HomePage extends StatelessWidget {
+  HomePage({super.key});
 
   final PageController _pageController = PageController();
 
@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       _buildMenuGrid(context),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 15),
                       _buildPromoSlider(),
                     ],
                   ),
@@ -39,13 +39,17 @@ class HomeScreen extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color.fromARGB(255, 46, 46, 46),
-            Color.fromARGB(255, 42, 42, 42),
-          ],
+        // gradient: LinearGradient(
+        //   begin: Alignment.topLeft,
+        //   end: Alignment.bottomRight,
+        //   colors: [
+        //     Color.fromARGB(255, 46, 46, 46),
+        //     Color.fromARGB(255, 42, 42, 42),
+        //   ],
+        // ),
+        image: const DecorationImage(
+          image: AssetImage('assets/banner-img.jpg'),
+          fit: BoxFit.cover,
         ),
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(20),
@@ -69,7 +73,7 @@ class HomeScreen extends StatelessWidget {
                     "Hibatul Wafi P",
                     style: TextStyle(
                       color: Colors.orange,
-                      fontSize: 20,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -91,7 +95,7 @@ class HomeScreen extends StatelessWidget {
                           "VIP Member",
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 10,
+                            fontSize: 9,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -102,10 +106,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
-          // IconButton(
-          //   icon: const Icon(Icons.edit, color: Colors.white),
-          //   onPressed: () {},
-          // ),
         ],
       ),
     );
@@ -114,13 +114,13 @@ class HomeScreen extends StatelessWidget {
   Widget _buildInfoRow(IconData icon, String text) {
     return Row(
       children: [
-        Icon(icon, color: Colors.white, size: 18),
+        Icon(icon, color: Colors.white, size: 14),
         const SizedBox(width: 5),
         Text(
           text,
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 16,
+            fontSize: 14,
           ),
         ),
         const SizedBox(width: 5),

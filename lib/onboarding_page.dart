@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'login.dart';
 
-class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key});
+class OnboardingPage extends StatefulWidget {
+  const OnboardingPage({super.key});
 
   @override
-  _OnboardingScreenState createState() => _OnboardingScreenState();
+  _OnboardingPageState createState() => _OnboardingPageState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingPageState extends State<OnboardingPage> {
   final PageController _controller = PageController();
   int _currentIndex = 0;
 
@@ -31,19 +31,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             },
             children: [
               buildPage(
-                image: 'assets/barber1.jpg',
-                title: 'Selamat Datang!',
-                description: 'Potongan terbaik untuk pria modern.',
+                image: 'assets/onboard-img-1.jpeg',
+                title: 'Welcome!',
+                description: 'The best cuts for the modern man.',
               ),
               buildPage(
-                image: 'assets/barber2.jpg',
-                title: 'Profesional & Bersih',
-                description: 'Gunakan layanan berkualitas tinggi di sini!',
+                image: 'assets/onboard-img-2.jpeg',
+                title: 'Professional & Clean',
+                description: 'Experience high-quality service here!',
               ),
               buildPage(
-                image: 'assets/barber3.jpg',
-                title: 'Pesan Sekarang!',
-                description: 'Dapatkan tampilan terbaik Anda hari ini.',
+                image: 'assets/onboard-img-3.jpeg',
+                title: 'Book Now!',
+                description:
+                    'Get your best look today. Where Every Style Matters',
               ),
             ],
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'custom_header.dart';
 import 'pages/home_page.dart';
 import 'pages/store_page.dart';
 import 'pages/scan_page.dart';
@@ -33,16 +34,17 @@ class _MainMenuState extends State<MainMenu> {
 
   // List Halaman
   final List<Widget> _pages = [
-    HomeScreen(),
-    StoreScreen(),
-    ScanScreen(),
-    SupportScreen(),
-    ProfileScreen(),
+    HomePage(),
+    StorePage(),
+    ScanPage(),
+    SupportPage(),
+    ProfilePage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomHeader(),
       body: IndexedStack(
         index: _selectedIndex,
         children: _pages,

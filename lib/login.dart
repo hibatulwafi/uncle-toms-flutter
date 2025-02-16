@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           // Background Image
           Image.asset(
-            'assets/barber2.jpg',
+            'assets/login-img.jpeg',
             fit: BoxFit.cover,
           ),
 
@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       fit: BoxFit.contain,
                     ),
                     const SizedBox(height: 20),
-                    
+
                     const Text(
                       "Login Area",
                       style: TextStyle(
@@ -107,7 +107,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _emailController,
                       icon: Icons.email_outlined,
                       hintText: "Email",
-                      validator: (value) => value!.isEmpty ? "Email wajib diisi" : null,
+                      validator: (value) =>
+                          value!.isEmpty ? "Email wajib diisi" : null,
                     ),
                     const SizedBox(height: 15),
 
@@ -117,7 +118,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       icon: Icons.lock_outline,
                       hintText: "Password",
                       isPassword: true,
-                      validator: (value) => value!.isEmpty ? "Password wajib diisi" : null,
+                      validator: (value) =>
+                          value!.isEmpty ? "Password wajib diisi" : null,
                     ),
                     const SizedBox(height: 20),
 
@@ -133,7 +135,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      child: const Text("Masuk", style: TextStyle(fontSize: 18)),
+                      child:
+                          const Text("Masuk", style: TextStyle(fontSize: 18)),
                     ),
                     const SizedBox(height: 15),
 

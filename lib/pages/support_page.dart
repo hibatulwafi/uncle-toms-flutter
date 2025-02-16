@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SupportScreen extends StatelessWidget {
-  const SupportScreen({super.key});
+class SupportPage extends StatelessWidget {
+  const SupportPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,8 @@ class SupportScreen extends StatelessWidget {
                   children: const [
                     FAQItem(
                       question: "Apakah perlu reservasi sebelum datang?",
-                      answer: "Tidak wajib, tapi disarankan untuk menghindari antrean.",
+                      answer:
+                          "Tidak wajib, tapi disarankan untuk menghindari antrean.",
                     ),
                     FAQItem(
                       question: "Apakah menerima pembayaran dengan kartu?",
@@ -86,11 +87,13 @@ class SupportScreen extends StatelessWidget {
                     ),
                     FAQItem(
                       question: "Apakah ada layanan home service?",
-                      answer: "Ya, kami menyediakan home service dengan biaya tambahan.",
+                      answer:
+                          "Ya, kami menyediakan home service dengan biaya tambahan.",
                     ),
                     FAQItem(
                       question: "Berapa harga potong rambut?",
-                      answer: "Harga potong rambut mulai dari Rp50.000, tergantung model yang dipilih.",
+                      answer:
+                          "Harga potong rambut mulai dari Rp50.000, tergantung model yang dipilih.",
                     ),
                   ],
                 ),
@@ -133,7 +136,8 @@ class ContactCard extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style:
+              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         subtitle: Text(
           subtitle,
@@ -168,7 +172,8 @@ class _FAQItemState extends State<FAQItem> {
       child: ListTile(
         title: Text(
           widget.question,
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style:
+              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         trailing: Icon(
           _isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,

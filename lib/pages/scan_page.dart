@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'qr_scanner_screen.dart'; // Pastikan file di-import dengan benar
+import 'qr_scanner_page.dart'; // Pastikan file di-import dengan benar
 
-class ScanScreen extends StatefulWidget {
-  const ScanScreen({super.key});
+class ScanPage extends StatefulWidget {
+  const ScanPage({super.key});
 
   @override
-  _ScanScreenState createState() => _ScanScreenState();
+  _ScanPageState createState() => _ScanPageState();
 }
 
-class _ScanScreenState extends State<ScanScreen> {
+class _ScanPageState extends State<ScanPage> {
   String scanResult = "Belum ada hasil scan";
 
   Future<void> scanQRCode() async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const QRScannerScreen(),
+        builder: (context) => const QRScannerPage(),
       ),
     );
 

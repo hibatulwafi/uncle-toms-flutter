@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'onboarding_screen.dart';
+import 'onboarding_page.dart';
 import 'main_menu.dart';
 
 void main() {
@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Uncle Tom\'s Barbershop',
       theme: ThemeData.dark(),
-      home: const OnboardingScreen(),
-      // home: const MainMenu(),
+      // home: const OnboardingPage(),
+      home: const MainMenu(),
     );
   }
 }
