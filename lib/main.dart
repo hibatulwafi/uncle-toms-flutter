@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Uncle Tom\'s Barbershop',
       theme: ThemeData.dark(),
-      // home: const OnboardingPage(),
-      home: const MainMenu(),
+      home: const OnboardingPage(),
+      // home: const MainMenu(),
     );
   }
 }
