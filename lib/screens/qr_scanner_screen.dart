@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-class QRScannerPage extends StatefulWidget {
-  const QRScannerPage({super.key});
+class QRScannerScreen extends StatefulWidget {
+  const QRScannerScreen({super.key});
 
   @override
-  _QRScannerPageState createState() => _QRScannerPageState();
+  _QRScannerScreenState createState() => _QRScannerScreenState();
 }
 
-class _QRScannerPageState extends State<QRScannerPage>
+class _QRScannerScreenState extends State<QRScannerScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;

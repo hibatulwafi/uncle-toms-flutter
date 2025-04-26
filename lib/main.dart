@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'onboarding_page.dart';
-import 'main_menu.dart';
+import 'screens/onboarding_screen.dart';
+import 'screens/login_screen.dart';
+import 'screens/home_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // ⬅️ Panggil dulu
   runApp(const MyApp());
 }
 
@@ -15,8 +17,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Uncle Tom\'s Barbershop',
       theme: ThemeData.dark(),
-      home: const OnboardingPage(),
-      // home: const MainMenu(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const OnboardingPage(),
+        '/login': (context) => const LoginScreen(),
+        '/mainMenu': (context) => HomeScreen(),
+      },
     );
   }
 }

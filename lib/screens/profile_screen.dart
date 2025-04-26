@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class ProfilePage extends StatelessWidget {
 
             // Nama & Email
             const Text(
-              "Hibatul Wafi P",
+              "Alvin Jeremy",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 22,

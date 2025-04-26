@@ -1,9 +1,108 @@
 import 'package:flutter/material.dart';
+import '../widgets/custom_header.dart';
+import 'store_screen.dart';
+import 'scan_screen.dart';
+import 'support_screen.dart';
+import 'profile_screen.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+import '../models/profile.dart';
+import '../services/profile_service.dart';
 
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatefulWidget {
+  HomeScreen({super.key});
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+
+  // List Halaman
+  final List<Widget> _pages = [
+    HomePage(),
+    StoreScreen(),
+    const ScanScreen(),
+    const SupportScreen(),
+    const ProfileScreen(),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomHeader(),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        backgroundColor: Colors.black,
+        selectedItemColor: Colors.orange,
+        unselectedItemColor: Colors.white60,
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.store), label: "Store"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.qr_code_scanner), label: "Scan"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.support_agent), label: "Support"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+        ],
+      ),
+    );
+  }
+}
+
+// Halaman Home yang terpisah
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final PageController _pageController = PageController();
+  Profile? _profile;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchProfile();
+  }
+
+  Future<void> _fetchProfile() async {
+    try {
+      Profile profile = await ProfileService().getProfile();
+      setState(() {
+        _profile = profile;
+        _isLoading = false;
+      });
+    } catch (e) {
+      print("Gagal ambil data profil: $e");
+      setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,19 +134,28 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildProfileSection() {
+    if (_isLoading) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(20),
+          child: CircularProgressIndicator(color: Colors.orange),
+        ),
+      );
+    }
+
+    if (_profile == null) {
+      return const Padding(
+        padding: EdgeInsets.all(20),
+        child: Text("Profil tidak ditemukan",
+            style: TextStyle(color: Colors.white)),
+      );
+    }
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: const BoxDecoration(
-        // gradient: LinearGradient(
-        //   begin: Alignment.topLeft,
-        //   end: Alignment.bottomRight,
-        //   colors: [
-        //     Color.fromARGB(255, 46, 46, 46),
-        //     Color.fromARGB(255, 42, 42, 42),
-        //   ],
-        // ),
-        image: const DecorationImage(
+        image: DecorationImage(
           image: AssetImage('assets/banner-img.jpg'),
           fit: BoxFit.cover,
         ),
@@ -57,50 +165,48 @@ class HomePage extends StatelessWidget {
         ),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
+          CircleAvatar(
+            radius: 40,
+            backgroundImage: _profile!.photo.isNotEmpty
+                ? NetworkImage(
+                    "http://192.168.145.94:8000/storage/${_profile!.photo}")
+                : const AssetImage('assets/ava1.png') as ImageProvider,
+          ),
+          const SizedBox(width: 15),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CircleAvatar(
-                radius: 40,
-                backgroundImage: AssetImage('assets/ava1.png'),
+              Text(
+                _profile!.name,
+                style: const TextStyle(
+                  color: Colors.orange,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              const SizedBox(width: 15),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              const SizedBox(height: 5),
+              _buildInfoRow(Icons.phone, _profile!.phone),
+              _buildInfoRow(Icons.email, _profile!.email),
+              Row(
                 children: [
-                  const Text(
-                    "Hibatul Wafi P",
-                    style: TextStyle(
-                      color: Colors.orange,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  _buildInfoRow(Icons.star, "Poin: ${_profile!.totalPoint}"),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.amber,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  ),
-                  const SizedBox(height: 5),
-                  _buildInfoRow(Icons.phone, "+62 812-3456-7890"),
-                  _buildInfoRow(Icons.email, "user@email.com"),
-                  Row(
-                    children: [
-                      _buildInfoRow(Icons.star, "Poin: 122k"),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.amber, // Warna gold untuk VIP
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Text(
-                          "VIP Member",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 9,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                    child: const Text(
+                      "VIP Member",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 9,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),

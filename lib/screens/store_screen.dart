@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class StorePage extends StatelessWidget {
-  StorePage({super.key});
-
+class StoreScreen extends StatelessWidget {
+  StoreScreen({Key? key}) : super(key: key); // Hapus const di sini
   // Data barbershop
   final List<Map<String, dynamic>> stores = [
     {

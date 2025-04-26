@@ -1,5 +1,5 @@
 name: uncle_toms_barbershop
-description: "A new Flutter project."
+description: "Uncle Toms Barbershop Member Application"
 publish_to: "none"
 
 version: 1.0.0+1
@@ -13,13 +13,23 @@ dependencies:
   smooth_page_indicator: ^1.0.0
   cupertino_icons: ^1.0.8
   url_launcher: ^6.1.14 
-  mobile_scanner: ^3.2.0
+  mobile_scanner: ^6.0.8
   flutter_native_splash: ^2.3.6
+  http_interceptor: ^2.0.0
+  flutter_dotenv: ^5.2.0
+  dio: ^5.4.0 
+  json_annotation: ^4.8.1
+  jwt_decoder: ^2.0.1
+  flutter_secure_storage: ^10.0.0-beta.4
+  shared_preferences: ^2.2.2
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  build_runner: ^2.4.8 
+  json_serializable: ^6.7.1 
 
 flutter:
   uses-material-design: true

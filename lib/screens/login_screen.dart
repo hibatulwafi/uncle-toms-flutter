@@ -1,43 +1,84 @@
 import 'package:flutter/material.dart';
-import 'main_menu.dart'; // Pastikan file main_menu.dart ada di dalam proyek
+import 'package:dio/dio.dart';
+import 'home_screen.dart';
+import '../services/login_service.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _loginService = LoginService();
+  final storage = const FlutterSecureStorage();
 
-  // Dummy email & password
-  final String dummyEmail = "hiwapiputra@gmail.com";
-  final String dummyPassword = "123456";
+  bool _isLoading = false;
+  bool _obscurePassword = true; // Untuk menyembunyikan/memperlihatkan password
 
-  void _login() {
-    if (_formKey.currentState!.validate()) {
-      String email = _emailController.text.trim();
-      String password = _passwordController.text.trim();
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
-      if (email == dummyEmail && password == dummyPassword) {
-        // Jika login benar, alihkan ke Main Menu
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MainMenu()),
-        );
+  Future<void> _login() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    try {
+      final data = await _loginService.login(email, password);
+
+      if (!mounted) return;
+
+      if (data.containsKey('access_token')) {
+        await storage.write(key: 'token', value: data['access_token']);
+
+        if (!mounted) return;
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => HomeScreen()),
+          );
+        });
       } else {
-        // Jika salah, tampilkan pesan error
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Email atau Password salah!"),
-            backgroundColor: Colors.red,
-          ),
-        );
+        _showSnackBar(data['message'] ?? 'Login gagal');
+      }
+    } on DioException catch (e) {
+      if (!mounted) return;
+
+      final errorMessage =
+          e.response?.data['message'] ?? 'Terjadi kesalahan saat login.';
+      _showSnackBar(errorMessage);
+    } catch (e) {
+      if (!mounted) return;
+
+      _showSnackBar('Terjadi kesalahan saat login.');
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
       }
     }
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 
   @override
@@ -52,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
             fit: BoxFit.cover,
           ),
 
-          // Gradasi Overlay
+          // Gradasi overlay
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -66,23 +107,21 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
 
-          // Form Login
+          // Form login
           Center(
-            child: Padding(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Form(
                 key: _formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Tambahkan Logo
                     Image.asset(
                       'assets/ut-logo.png',
                       height: 100,
                       fit: BoxFit.contain,
                     ),
                     const SizedBox(height: 20),
-
                     const Text(
                       "Login Area",
                       style: TextStyle(
@@ -101,8 +140,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 40),
-
-                    // Input Email
                     _buildInputField(
                       controller: _emailController,
                       icon: Icons.email_outlined,
@@ -111,42 +148,48 @@ class _LoginScreenState extends State<LoginScreen> {
                           value!.isEmpty ? "Email wajib diisi" : null,
                     ),
                     const SizedBox(height: 15),
-
-                    // Input Password
-                    _buildInputField(
+                    _buildPasswordField(
                       controller: _passwordController,
                       icon: Icons.lock_outline,
                       hintText: "Password",
-                      isPassword: true,
                       validator: (value) =>
                           value!.isEmpty ? "Password wajib diisi" : null,
                     ),
                     const SizedBox(height: 20),
-
-                    // Tombol Login
                     ElevatedButton(
-                      onPressed: _login,
+                      onPressed: _isLoading ? null : _login,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: Colors.black,
                         padding: const EdgeInsets.symmetric(
-                            vertical: 14, horizontal: 50),
+                          vertical: 14,
+                          horizontal: 50,
+                        ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      child:
-                          const Text("Masuk", style: TextStyle(fontSize: 18)),
+                      child: _isLoading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.black,
+                              ),
+                            )
+                          : const Text(
+                              "Masuk",
+                              style: TextStyle(fontSize: 18),
+                            ),
                     ),
                     const SizedBox(height: 15),
-
-                    // Lupa Password & Daftar
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextButton(
                           onPressed: () {
-                            // TODO: Lupa Password
+                            // TODO: forgot password
                           },
                           child: const Text(
                             "Lupa Password?",
@@ -156,7 +199,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(width: 10),
                         TextButton(
                           onPressed: () {
-                            // TODO: Navigasi ke halaman daftar
+                            // TODO: navigasi ke daftar
                           },
                           child: const Text(
                             "Daftar",
@@ -170,6 +213,17 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
+
+          if (_isLoading) ...[
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
@@ -179,12 +233,10 @@ class _LoginScreenState extends State<LoginScreen> {
     required TextEditingController controller,
     required IconData icon,
     required String hintText,
-    bool isPassword = false,
     String? Function(String?)? validator,
   }) {
     return TextFormField(
       controller: controller,
-      obscureText: isPassword,
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.white70),
@@ -195,6 +247,42 @@ class _LoginScreenState extends State<LoginScreen> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
           borderSide: BorderSide.none,
+        ),
+      ),
+      validator: validator,
+    );
+  }
+
+  Widget _buildPasswordField({
+    required TextEditingController controller,
+    required IconData icon,
+    required String hintText,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      obscureText: _obscurePassword,
+      style: const TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        prefixIcon: Icon(icon, color: Colors.white70),
+        hintText: hintText,
+        hintStyle: const TextStyle(color: Colors.white54),
+        filled: true,
+        fillColor: Colors.white.withOpacity(0.2),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide.none,
+        ),
+        suffixIcon: IconButton(
+          icon: Icon(
+            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+            color: Colors.white70,
+          ),
+          onPressed: () {
+            setState(() {
+              _obscurePassword = !_obscurePassword;
+            });
+          },
         ),
       ),
       validator: validator,
