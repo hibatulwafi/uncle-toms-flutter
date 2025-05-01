@@ -169,8 +169,7 @@ class _HomePageState extends State<HomePage> {
           CircleAvatar(
             radius: 40,
             backgroundImage: _profile!.photo.isNotEmpty
-                ? NetworkImage(
-                    "http://192.168.145.94:8000/storage/${_profile!.photo}")
+                ? NetworkImage(_profile!.photo)
                 : const AssetImage('assets/ava1.png') as ImageProvider,
           ),
           const SizedBox(width: 15),

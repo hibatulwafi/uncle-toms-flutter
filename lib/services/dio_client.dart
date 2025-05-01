@@ -11,7 +11,7 @@ class DioClient {
 
   DioClient._internal() {
     dio = Dio(BaseOptions(
-      baseUrl: 'http://192.168.145.94:8000/api/app',
+      baseUrl: 'http://192.168.209.94:8000/api/app',
       headers: {
         'Accept': 'application/json',
       },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -74,8 +75,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   child: _currentIndex == 2
                       ? ElevatedButton(
                           key: const ValueKey('start_button'),
-                          onPressed: () {
-                            // TODO: Navigasi ke halaman utama
+                          onPressed: () async {
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.setBool('hasSeenOnboarding', true);
+
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(

@@ -133,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 10),
                     const Text(
-                      "Gaya Terbaik, Performa Maksimal",
+                      "Where Every Style Matters",
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.white70,
